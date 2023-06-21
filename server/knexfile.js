@@ -1,9 +1,9 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 module.exports = {
   development: {
     client: 'pg',
-    connection: 'postgres://ajkiegtm:7_hR_cPo5i8lZM0zKMkG5LZkOGadw56S@mahmud.db.elephantsql.com/ajkiegtm',
+    connection: process.env.DATABASE_URL,
     // pool: { min: 0, max: 5 },
     migrations: {
       directory: './migrations',
@@ -12,7 +12,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: 'postgres://ajkiegtm:7_hR_cPo5i8lZM0zKMkG5LZkOGadw56S@mahmud.db.elephantsql.com/ajkiegtm',
+    connection: process.env.DATABASE_URL,
     // pool: { min: 0, max: 5 },
     migrations: {
       directory: './migrations',

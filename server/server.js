@@ -1,3 +1,5 @@
+//**THIS MIGHT NEED TO BE MOVED TO CONNECTION.JS */
+
 const knex = require('knex');
 const knexfile = require('./knexfile');
 
