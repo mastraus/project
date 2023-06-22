@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nav-pills .nav-link.active {
+  background-color: rgb(229, 171, 77);
+  color: rgb(248, 243, 233);
+  font-family: Poppins, "sans-serif";
+  font-weight: 600;
+}
+
+.nav-pills .nav-link {
+  color: rgb(0, 0, 0);
+  font-family: Poppins, "sans-serif";
+}
+
+.font-poppins {
+  font-family: Poppins, "sans-serif";
+}
+
+.font-poppins-heading {
+  font-family: Poppins, "sans-serif";
+  font-weight: 700;
+}

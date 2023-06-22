@@ -1,13 +1,14 @@
-//**THIS MIGHT NEED TO BE MOVED TO CONNECTION.JS */
+const { PORT = 5000 } = process.env;
 
-const knex = require('knex');
-const knexfile = require('./knexfile');
+const app = require('./app');
+const knex = require('./db/connection');
 
-const env = process.env.NODE_ENV || 'development';
-const configOptions = knexfile[env];
+const listener = () => console.log(`Listening on Port ${PORT}`);
 
-module.exports = knex(configOptions);
-
-// const server = knex(knexfile.development);
-
-// module.exports = server;
+knex.migrate
+  .latest()
+  .then((migrations) => {
+    console.log("migrations", migrations);
+    app.listen(PORT, listener);
+  })
+  .catch(console.error);
