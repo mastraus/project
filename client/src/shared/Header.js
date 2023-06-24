@@ -31,10 +31,3 @@ function Header() {
 }
 
 export default Header;
-
-/*
- * Created with https://www.css-gradient.com
- * Gradient link: https://www.css-gradient.com/?c1=ffddaa&c2=e08138&gt=l&gd=dbb
- */
-// background: rgba(255, 221, 170, 1.0);
-// background: linear-gradient(0deg, rgba(255, 221, 170, 1.0), rgba(224, 129, 56, 1.0));

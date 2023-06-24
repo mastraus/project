@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 
 //const errorHandler
 //const notFound
 
-const pizzaRouter = require('./routers/pizzaRoutes');
+const pizzaRouter = require("./routers/pizzaRoutes");
 // const toppingsRouter = require('./routers/toppingsRoutes');
 
 app.use(cors());
