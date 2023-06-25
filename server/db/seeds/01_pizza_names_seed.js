@@ -1,13 +1,16 @@
-exports.seed = function(knex) {
-  return knex('pizza_names').insert([
+exports.seed = function (knex) {
+  return knex("pizza_names").insert([
     {
-      pizza_name: 'Cheese'
+      id: 1,
+      pizza_name: "Cheese",
     },
     {
-      pizza_name: 'Pepperoni'
+      id: 2,
+      pizza_name: "Pepperoni",
     },
     {
-      pizza_name: 'Meatlovers'
+      id: 3,
+      pizza_name: "Meatlovers",
     },
   ]);
 };

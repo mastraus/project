@@ -1,19 +1,24 @@
-exports.seed = function(knex) {
-  return knex('topping_names').insert([
+exports.seed = function (knex) {
+  return knex("topping_names").insert([
     {
-      topping_name: 'Pepperoni'
+      id: 1,
+      topping_name: "Pepperoni",
     },
     {
-      topping_name: 'Sausage'
+      id: 2,
+      topping_name: "Sausage",
     },
     {
-      topping_name: 'Canadian Bacon'
+      id: 3,
+      topping_name: "Canadian Bacon",
     },
     {
-      topping_name: 'Black Olive'
+      id: 4,
+      topping_name: "Black Olive",
     },
     {
-      topping_name: 'Wild Donkey'
+      id: 5,
+      topping_name: "Wild Donkey",
     },
   ]);
 };
