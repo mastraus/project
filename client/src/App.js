@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import PizzaList from "./content/pizzas/PizzaList";
+import ToppingsList from "./content/toppings/ToppingsList";
 // import PizzaGrid from "./shared/PizzaGrid";
 // import { activeTabs } from "./utils/tabs";
 import React, { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ function App() {
               <Tab.Content>
                 <Routes>
                   <Route path={`/pizzas`} element={<PizzaList />} />
+                  <Route path={`/toppings`} element={<ToppingsList />} />
                 </Routes>
               </Tab.Content>
             </Col>

@@ -6,11 +6,12 @@ const cors = require("cors");
 //const notFound
 
 const pizzaRouter = require("./routers/pizzaRoutes");
-// const toppingsRouter = require('./routers/toppingsRoutes');
+const toppingsRouter = require("./routers/toppingsRoutes");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/pizzas", pizzaRouter);
+app.use("/toppings", toppingsRouter);
 
 module.exports = app;
