@@ -10,7 +10,7 @@ const API_BASE_URL = process.env.REACT_APP_DATABASE_URL;
 function PizzaList() {
   const [allPizzas, setAllPizzas] = useState([]);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     fetch("/pizzas")
       .then((resp) => {

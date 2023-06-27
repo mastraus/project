@@ -3,11 +3,11 @@ const app = require("../app");
 const controller = require("../controllers/toppingsController");
 // const methodNotAllowed = require("../errors/methodNotAllowed");
 
+router.route("/").post(controller.createTopping).get(controller.getToppings);
+
 router
-  .route("/")
-  // .post(controller.createPizza)
-  .get(controller.getToppings);
-// .put(controller.updatePizza)
-// .delete(controller.deletePizza)
+  .route("/:id")
+  .put(controller.updateTopping)
+  .delete(controller.deleteTopping);
 
 module.exports = router;
