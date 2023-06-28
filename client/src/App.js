@@ -22,12 +22,12 @@ function App() {
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
                   <Nav.Link eventKey="pizzas" as={Link} to={`/pizzas`}>
-                    Specialty Pizzas
+                    <h5>Specialty Pizzas</h5>
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="toppings" as={Link} to={`/toppings`}>
-                    Available Toppings
+                    <h5>Available Toppings</h5>
                   </Nav.Link>
                 </Nav.Item>
               </Nav>

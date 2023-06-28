@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { createTopping } from "../../utils/api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Row from "react-bootstrap/Row";
-import AddTopping from "./AddTopping";
+import React, { useEffect, useState, Fragment } from "react";
+import EditToppingRow from "./EditToppingRow";
+import ToppingsListItem from "./ToppingsListItem";
 
 function ToppingsList() {
   const [allToppings, setAllToppings] = useState([]);
-  const [toppingData, setToppingData] = useState("");
+  const [addTopping, setAddTopping] = useState("");
+  const [editId, setEditId] = useState(null);
+  const [editTopping, setEditTopping] = useState("");
 
   useEffect(() => {
     fetchToppings();
@@ -25,13 +24,31 @@ function ToppingsList() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ topping_name: toppingData }),
+      body: JSON.stringify({ topping_name: addTopping }),
     };
     const response = await fetch("/toppings", requestOptions);
     const data = await response.json();
     const newToppings = [data, ...allToppings];
     setAllToppings(newToppings);
-    setToppingData("");
+    setAddTopping("");
+    fetchToppings();
+  }
+
+  async function updateTopping() {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ topping_name: editTopping }),
+    };
+    const response = await fetch(`/toppings/${editId}`, requestOptions);
+    const data = await response.json();
+    const newToppings = [...allToppings];
+    const index = allToppings.findIndex((topping) => topping.id === editId);
+    newToppings[index] = data;
+    setAllToppings(newToppings);
+    setEditId(null);
     fetchToppings();
   }
 
@@ -43,91 +60,98 @@ function ToppingsList() {
       },
     };
     await fetch(`/toppings/${toppingId}`, requestOptions);
-    // const data = await response.json();
-    // const newToppings = [data, ...allToppings];
-    // setAllToppings(newToppings);
+
+    const newToppings = [...allToppings];
+    const index = newToppings.findIndex((topping) => topping.id === toppingId);
+    newToppings.splice(index, 1);
+    setAllToppings(newToppings);
     fetchToppings();
   }
 
-  // export async function createTopping(topping, signal) {
-  //   const url = `${API_BASE_URL}/toppings`;
-  //   const options = {
-  //     method: "POST",
-  //     headers,
-  //     body: JSON.stringify(topping),
-  //     signal,
-  //   };
-  //   return await fetchJson(url, options, topping);
-  // }
+  const handleAddChange = (event) => {
+    setAddTopping(event.target.value);
+  };
 
-  //async function updateTopping() {}
-
-  // export async function updateTopping(toppingId, data) {
-  //   const url = `${API_BASE_URL}/toppings/${toppingId}`;
-  //   const options = {
-  //     method: "PUT",
-  //     headers,
-  //     body: JSON.stringify({ data }),
-  //   };
-  //   return await fetchJson(url, options, {});
-  // }
+  const handleEditChange = (event) => {
+    setEditTopping(event.target.value);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     saveToppings();
   };
 
-  const handleChange = (event) => {
-    setToppingData(event.target.value);
+  const handleEditSubmit = (event) => {
+    event.preventDefault();
+    updateTopping();
   };
 
-  const getAllToppings = allToppings.map((topping) => (
-    <>
-      <div className="container">
-        <ul class="list-group list-group-light">
-          <li
-            key={topping.id}
-            class="list-group-item d-flex justify-content-between align-items-center"
-          >
-            <div class="d-flex align-items-center">{topping.topping_name}</div>
-            <div>
-              <i class="fa fa-pencil fa-lg mr-3" title="Edit"></i>
+  const handleEditClick = (event, topping) => {
+    event.preventDefault();
+    setEditId(topping.id);
+  };
 
-              <i
-                class="fa fa-trash fa-lg"
-                title="Delete"
-                onClick={() => deleteTopping(topping.id)}
-              ></i>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <br />
-    </>
-  ));
+  const handleCancelClick = () => {
+    setEditId(null);
+  };
 
   return (
-    <div>
+    <main className="container">
       <h2>Toppings</h2>
-      <main className="container">
-        <form id="to do form" onSubmit={handleSubmit}>
-          <input
-            className="topping-input p-3 w-75"
-            name="topping_name"
-            type="text"
-            placeholder="Enter new topping..."
-            onChange={handleChange}
-            required={true}
-            value={toppingData}
-          />
-          <button className="topping-btn p-3" type="submit">
-            Add
-          </button>
-        </form>
-        <div class="p-3"></div>
-        {getAllToppings}
-      </main>
-    </div>
+      <hr />
+
+      <form
+        id="add-topping"
+        onSubmit={handleSubmit}
+        className="add-container d-flex justify-content-center mr-5"
+      >
+        <input
+          className="topping-input p-3 ml-5"
+          name="topping_name"
+          type="text"
+          placeholder="Enter new topping..."
+          onChange={handleAddChange}
+          required={true}
+          value={addTopping}
+        />
+        <button className="topping-btn p-3 ml-2" type="submit">
+          Add
+        </button>
+      </form>
+
+      <div>
+        <ul class="mr-5">
+          <form onSubmit={handleEditSubmit}>
+            {allToppings.map((topping) => (
+              <Fragment>
+                {editId === topping.id ? (
+                  <>
+                    <br />
+                    <EditToppingRow
+                      editToppingName={editTopping}
+                      handleEditChange={handleEditChange}
+                      topping={topping}
+                      handleCancelClick={handleCancelClick}
+                    />
+                    <br />
+                  </>
+                ) : (
+                  <>
+                    <br />
+                    <ToppingsListItem
+                      topping={topping}
+                      handleEditClick={handleEditClick}
+                      handleDeleteClick={deleteTopping}
+                    />
+                    <br />
+                  </>
+                )}
+              </Fragment>
+            ))}
+          </form>
+        </ul>
+      </div>
+    </main>
   );
 }
 
