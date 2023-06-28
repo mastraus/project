@@ -9,15 +9,22 @@ const API_BASE_URL = process.env.REACT_APP_DATABASE_URL;
 
 function PizzaList() {
   const [allPizzas, setAllPizzas] = useState([]);
+  const [pizzaToppings, setPizzaToppings] = useState([]);
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    fetch("/pizzas")
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((json) => setAllPizzas(json));
+    fetchPizzas()
   }, []);
+
+  async function fetchPizzas() {
+    const response = await fetch("/pizzas");
+    const data = await response.json();
+    setAllPizzas(data)
+  }
+
+  // async function await fetchPizzaToppings("/toppings");
+  // const data = await response.json();
+
 
   const getAllPizzas = allPizzas.map((pizza) => (
     <div class="p-3" key={pizza.id}>
