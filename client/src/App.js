@@ -5,10 +5,8 @@ import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import PizzaList from "./content/pizzas/PizzaList";
 import ToppingsList from "./content/toppings/ToppingsList";
-// import PizzaGrid from "./shared/PizzaGrid";
-// import { activeTabs } from "./utils/tabs";
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Link, Switch, Routes, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
