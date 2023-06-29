@@ -11,6 +11,9 @@ function PizzaList() {
     toppings: [],
   });
   const [modalOpen, setModalOpen] = useState(false);
+  const [newPizzaName, setNewPizzaName] = useState("");
+  const [selectedToppings, setSelectedToppings] = useState([]);
+  const [checkedToppings, setCheckedToppings] = useState([]);
 
   useEffect(() => {
     fetchPizzas();
@@ -43,26 +46,111 @@ function PizzaList() {
 
   const extractedData = extractPizzaAndToppingNames(allPizzas);
 
-  const handleAddFormChange = (pizzaName, checkedToppings) => {
-    const newFormData = {
-      pizza_name: pizzaName,
-      toppings: checkedToppings,
+  // const newPizzas = [...allPizzas, newPizza]
+  // setAllPizzas(newPizzas)
+
+  async function savePizza() {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pizza_name: addFormData.pizza_name,
+        topping_ids: addFormData.toppings,
+      }),
     };
+    const response = await fetch("/pizzas", requestOptions);
+    const data = await response.json();
+    console.log(data);
+    const extractedPizzas = extractedData;
+    console.log(extractedPizzas);
+    const newPizzas = [...extractedPizzas, data];
+    setAllPizzas(newPizzas);
+  }
+
+  // const handleAddSubmit = (event) => {
+  //   event.preventDefault();
+  //   savePizza();
+  // };
+
+  const handleAddFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...addFormData };
+
+    if (fieldName === "toppings") {
+      newFormData[fieldName] = [...newFormData[fieldName], fieldValue];
+    } else {
+      newFormData[fieldName] = fieldValue;
+    }
 
     setAddFormData(newFormData);
   };
 
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
-
-    const newPizza = {
-      pizza_name: addFormData.pizza_name,
-      toppings: addFormData.toppings,
-    };
-
-    const newPizzas = [...allPizzas, newPizza];
-    setAllPizzas(newPizzas);
+    savePizza();
   };
+
+  // const handleAddNewPizza = (pizzaName, toppings) => {
+  //   setNewPizzaName(pizzaName);
+  //   setSelectedToppings(toppings);
+  //   savePizza(newPizzaName, selectedToppings);
+  // };
+
+  // const handleAddToppingsChange = (toppings) => {
+  //   setSelectedToppings(toppings);
+  //   console.log(selectedToppings);
+  // };
+
+  const handleChange = (event) => {
+    setNewPizzaName(event.target.value);
+  };
+
+  const handleEditSubmit = (checkedToppings) => {
+    savePizza(checkedToppings);
+  };
+
+  // const handleAddFormChange = (pizzaName, checkedToppings) => {
+  //   const newFormData = {
+  //     pizza_name: pizzaName,
+  //     toppings: checkedToppings,
+  //   };
+
+  //   setAddFormData(newFormData);
+  // };
+
+  // const handleAddFormNameChange = (event) => {
+  //   const fieldName = event.target.getAttribute("name");
+  //   const fieldValue = event.target.value;
+
+  //   const newFormData = { ...addFormData };
+  //   newFormData[fieldName] = fieldValue;
+  //   setAddFormData(newFormData);
+  //   console.log(newFormData);
+  // };
+
+  // function handleAddFormToppingsChange(checkedToppings) {
+  //   const newFormData = { ...addFormData };
+  //   newFormData["toppings"] = checkedToppings;
+  //   setAddFormData(newFormData);
+  //   console.log(newFormData);
+  // }
+
+  // const handleAddFormSubmit = (event, pizzaName, checkedToppings) => {
+  //   const newPizza = {
+  //     pizza_name: pizzaName,
+  //     toppings: checkedToppings,
+  //   };
+
+  //   const newPizzas = [...allPizzas, newPizza];
+  //   setAllPizzas(newPizzas);
+  //   savePizza();
+  // };
 
   function openModal() {
     setModalOpen(true);
@@ -71,6 +159,14 @@ function PizzaList() {
   function closeModal() {
     setModalOpen(false);
   }
+
+  const getChecked = (event) => {
+    const { checked, value } = event.currentTarget;
+
+    setCheckedToppings((prev) =>
+      checked ? [...prev, value] : prev.filter((val) => val !== value)
+    );
+  };
 
   return (
     <main className="container">

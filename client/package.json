@@ -4,9 +4,12 @@
   "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.13.6",
     "@syncfusion/ej2-react-buttons": "^22.1.34",
     "@syncfusion/ej2-react-lists": "^22.1.34",
     "@testing-library/jest-dom": "^5.16.5",
