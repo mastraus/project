@@ -1,6 +1,8 @@
 import React, { useEffect, useState, Fragment } from "react";
 import EditToppingRow from "./EditToppingRow";
 import ToppingsListItem from "./ToppingsListItem";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ToppingsList() {
   const [allToppings, setAllToppings] = useState([]);
@@ -76,9 +78,16 @@ function ToppingsList() {
     setEditTopping(event.target.value);
   };
 
+  const confirmAddedTopping = () => {
+    toast.success("Topping added successfully!", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     saveToppings();
+    confirmAddedTopping();
   };
 
   const handleEditSubmit = (event) => {
@@ -151,6 +160,7 @@ function ToppingsList() {
           </form>
         </ul>
       </div>
+      <ToastContainer />
     </main>
   );
 }

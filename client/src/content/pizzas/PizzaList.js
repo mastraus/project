@@ -1,19 +1,24 @@
 import React, { useEffect, useState, Fragment } from "react";
 import PizzaListItem from "./PizzaListItem";
 import AddPizzaModal from "./AddPizzaModal";
+import EditPizzaRow from "./EditPizzaRow";
 import Modal from "react-modal";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function PizzaList() {
   const [allPizzas, setAllPizzas] = useState([]);
   const [allToppings, setAllToppings] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [addFormData, setAddFormData] = useState({
     pizza_name: "",
     toppings: [],
   });
-  const [modalOpen, setModalOpen] = useState(false);
-  const [newPizzaName, setNewPizzaName] = useState("");
-  const [selectedToppings, setSelectedToppings] = useState([]);
-  const [checkedToppings, setCheckedToppings] = useState([]);
+  const [editFormData, setEditFormData] = useState({
+    pizza_name: "",
+    toppings: [],
+  });
 
   useEffect(() => {
     fetchPizzas();
@@ -32,22 +37,19 @@ function PizzaList() {
     setAllPizzas(data);
   }
 
-  function extractPizzaAndToppingNames(data) {
-    return Object.values(data).map((item) => {
+  function extractPizzaAndToppingNames(allPizzas) {
+    return Object.values(allPizzas).map((item) => {
       const { pizza_name, toppings } = item;
       const toppingNames = toppings.map((topping) => topping.topping_name);
+      const toppingIds = toppings.map((topping) => topping.topping_id);
 
       return {
         pizza_name: pizza_name,
         topping_names: toppingNames,
+        topping_ids: toppingIds,
       };
     });
   }
-
-  const extractedData = extractPizzaAndToppingNames(allPizzas);
-
-  // const newPizzas = [...allPizzas, newPizza]
-  // setAllPizzas(newPizzas)
 
   async function savePizza() {
     const requestOptions = {
@@ -60,19 +62,31 @@ function PizzaList() {
         topping_ids: addFormData.toppings,
       }),
     };
-    const response = await fetch("/pizzas", requestOptions);
-    const data = await response.json();
-    console.log(data);
-    const extractedPizzas = extractedData;
-    console.log(extractedPizzas);
-    const newPizzas = [...extractedPizzas, data];
-    setAllPizzas(newPizzas);
+    await fetch("/pizzas", requestOptions);
+    fetchPizzas();
   }
 
-  // const handleAddSubmit = (event) => {
-  //   event.preventDefault();
-  //   savePizza();
-  // };
+  async function updatePizza() {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pizza_name: editFormData.pizza_name,
+        topping_ids: editFormData.toppings,
+      }),
+    };
+    //might need to model how it was done with POST
+    const response = await fetch(`/pizzas/${editId}`, requestOptions);
+    const data = await response.json();
+    const newPizzas = [...allPizzas];
+    const index = allPizzas.findIndex((pizza) => pizza.id === editId);
+    newPizzas[index] = data;
+    setAllPizzas(newPizzas);
+    setEditId(null);
+    fetchToppings();
+  }
 
   const handleAddFormChange = (event) => {
     event.preventDefault();
@@ -91,66 +105,56 @@ function PizzaList() {
     setAddFormData(newFormData);
   };
 
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...editFormData };
+
+    if (fieldName === "toppings") {
+      newFormData[fieldName] = [...newFormData[fieldName], fieldValue];
+    } else {
+      newFormData[fieldName] = fieldValue;
+    }
+
+    setEditFormData(newFormData);
+  };
+
+  const confirmAddedPizza = () => {
+    toast.success("Pizza added successfully!", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
     savePizza();
+    setModalOpen(false);
+    confirmAddedPizza();
   };
 
-  // const handleAddNewPizza = (pizzaName, toppings) => {
-  //   setNewPizzaName(pizzaName);
-  //   setSelectedToppings(toppings);
-  //   savePizza(newPizzaName, selectedToppings);
-  // };
-
-  // const handleAddToppingsChange = (toppings) => {
-  //   setSelectedToppings(toppings);
-  //   console.log(selectedToppings);
-  // };
-
-  const handleChange = (event) => {
-    setNewPizzaName(event.target.value);
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+    updatePizza();
   };
 
-  const handleEditSubmit = (checkedToppings) => {
-    savePizza(checkedToppings);
+  const handleEditClick = (event, pizza) => {
+    event.preventDefault();
+    setEditId(pizza.id);
+
+    const formValues = {
+      pizza_name: pizza.pizza_name,
+      toppings: pizza.toppings,
+    };
+
+    setEditFormData(formValues);
   };
 
-  // const handleAddFormChange = (pizzaName, checkedToppings) => {
-  //   const newFormData = {
-  //     pizza_name: pizzaName,
-  //     toppings: checkedToppings,
-  //   };
-
-  //   setAddFormData(newFormData);
-  // };
-
-  // const handleAddFormNameChange = (event) => {
-  //   const fieldName = event.target.getAttribute("name");
-  //   const fieldValue = event.target.value;
-
-  //   const newFormData = { ...addFormData };
-  //   newFormData[fieldName] = fieldValue;
-  //   setAddFormData(newFormData);
-  //   console.log(newFormData);
-  // };
-
-  // function handleAddFormToppingsChange(checkedToppings) {
-  //   const newFormData = { ...addFormData };
-  //   newFormData["toppings"] = checkedToppings;
-  //   setAddFormData(newFormData);
-  //   console.log(newFormData);
-  // }
-
-  // const handleAddFormSubmit = (event, pizzaName, checkedToppings) => {
-  //   const newPizza = {
-  //     pizza_name: pizzaName,
-  //     toppings: checkedToppings,
-  //   };
-
-  //   const newPizzas = [...allPizzas, newPizza];
-  //   setAllPizzas(newPizzas);
-  //   savePizza();
-  // };
+  const handleCancelClick = () => {
+    setEditId(null);
+  };
 
   function openModal() {
     setModalOpen(true);
@@ -160,21 +164,11 @@ function PizzaList() {
     setModalOpen(false);
   }
 
-  const getChecked = (event) => {
-    const { checked, value } = event.currentTarget;
-
-    setCheckedToppings((prev) =>
-      checked ? [...prev, value] : prev.filter((val) => val !== value)
-    );
-  };
-
   return (
     <main className="container">
       <h2>Specialty Pizzas</h2>
       <hr />
-
       <button onClick={openModal}>Add New Pizza!</button>
-
       <Modal
         isOpen={modalOpen}
         onRequestClose={closeModal}
@@ -189,13 +183,36 @@ function PizzaList() {
 
       <div>
         <ul class="mr-5">
-          <form>
-            {extractedData.map((pizza) => (
-              <PizzaListItem pizza={pizza} />
+          <form onSubmit={handleEditFormSubmit}>
+            {extractPizzaAndToppingNames(allPizzas).map((pizza) => (
+              <Fragment>
+                {editId === pizza.id ? (
+                  <>
+                    <br />
+                    <EditPizzaRow
+                      pizza={pizza}
+                      editFormData={editFormData}
+                      handleEditFormChange={handleEditFormChange}
+                      handleCancelClick={handleCancelClick}
+                    />
+                    <br />
+                  </>
+                ) : (
+                  <>
+                    <br />
+                    <PizzaListItem
+                      pizza={pizza}
+                      handleEditClick={handleEditClick}
+                    />
+                    <br />
+                  </>
+                )}
+              </Fragment>
             ))}
           </form>
         </ul>
       </div>
+      <ToastContainer />
     </main>
   );
 }

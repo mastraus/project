@@ -1,6 +1,6 @@
 import React from "react";
 
-function PizzaListItem({ pizza }) {
+function PizzaListItem({ pizza, handleEditClick }) {
   return (
     <li
       key={pizza.id}
@@ -18,7 +18,11 @@ function PizzaListItem({ pizza }) {
       </div>
 
       <div class="pr-3">
-        <button type="button" class="btn btn-default">
+        <button
+          type="button"
+          class="btn btn-default"
+          onClick={(event) => handleEditClick(event, pizza)}
+        >
           <span class="fa fa-pencil fa-lg"></span>
         </button>
 
