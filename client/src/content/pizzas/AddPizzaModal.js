@@ -6,44 +6,51 @@ function AddPizzaModal({
   handleAddFormSubmit,
 }) {
   return (
-    <div>
-      <form
-        id="add-pizza"
-        className="test-2 d-flex justify-content-center mr-h"
-        onSubmit={handleAddFormSubmit}
-      >
-        <div>
-          <h5>Make your pizza</h5>
-          <div class="custom-control custom-checkbox">
-            <input
-              className="pizza-name-input p-3 ml-5"
-              name="pizza_name"
-              type="text"
-              placeholder="Enter pizza name..."
-              onChange={handleAddFormChange}
-            />
-            {allToppings.map(({ id, topping_name }) => (
-              <Fragment>
-                <div class="customo control custmo-checkboox">
-                  <input
-                    type="checkbox"
-                    name="toppings"
-                    id={id}
-                    value={id}
-                    onChange={handleAddFormChange}
-                  />
-                  <label for={id}>{topping_name}</label>
+    <form id="add-pizza" onSubmit={handleAddFormSubmit} className="form-style">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add New Pizza</h4>
+          </div>
+          <div class="modal-body">
+            <div class="custom-control custom-checkbox mr-3">
+              <input
+                className="add-pizza-input m-3 mb-4 mt-3 p-2"
+                name="pizza_name"
+                type="text"
+                placeholder="Enter pizza name..."
+                onChange={handleAddFormChange}
+              />
+              <div className="add-pizza-toppings">
+                <h5>Select Toppings:</h5>
+                <div className="mt-3">
+                  {allToppings.map(({ id, topping_name }) => (
+                    <Fragment>
+                      <div class="customo control custmo-checkboox">
+                        <input
+                          className="mr-2"
+                          type="checkbox"
+                          name="toppings"
+                          id={id}
+                          value={id}
+                          onChange={handleAddFormChange}
+                        />
+                        <label for={id}>{topping_name}</label>
+                      </div>
+                    </Fragment>
+                  ))}
                 </div>
-              </Fragment>
-            ))}
+              </div>
+            </div>
           </div>
 
-          <button className="pizza-add-btn p-3 ml-2" type="submit">
-            Add Pizza
-          </button>
+          <div class="modal-footer">
+            <button className="btn btn-warning" type="submit">
+              Submit
+            </button>
+          </div>
         </div>
-      </form>
-    </div>
+
+    </form>
   );
 }
 

@@ -207,13 +207,13 @@ function PizzaList() {
         </button>
       </div>
 
-      {/* <div classname="modal-dialog modal-dialog-centered"> */}
 
         <Modal
           isOpen={modalOpen}
           onRequestClose={closeModal}
           ariaHideApp={false}
-          portalClassName="test1"
+          centered
+          className="ReactModal__Content--after-open"
         >
           <AddPizzaModal
             allToppings={allToppings}
@@ -221,7 +221,8 @@ function PizzaList() {
             handleAddFormSubmit={handleAddFormSubmit}
           />
         </Modal>
-     
+
+
       <br />
 
       <div>

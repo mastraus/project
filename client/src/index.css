@@ -70,11 +70,36 @@ body {
   font-size: 16px;
 }
 
-.edit-form {
+.add-pizza-input {
+  background-color: rgb(255, 251, 230);
+  border: 1px solid rgb(224, 208, 208);
+  border-radius: 10px;
+  width: 95%;
+  font-family: "courier";
+  font-size: 16px;
+}
+
+.edit-topping-form {
   border: 0;
   font-family: "courier";
   width: 80%;
+  color: rgb(125, 125, 125);
 }
+
+.edit-pizza-form {
+  border: 0;
+  font-family: "courier";
+  width: 100%;
+  color: rgb(125, 125, 125);
+  font-size: 22px;
+}
+
+/* .topping-list-group-item {
+  border: 1px solid rgb(155, 167, 145);
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: Poppins, "sans-serif";
+} */
 
 .topping-btn {
   padding: 0 20px;
@@ -115,53 +140,11 @@ body {
   font-size: 18px;
 }
 
-.test-1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.75);
+.ReactModal__Content--after-open {
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0;
+  height: 40rem;
+  width: 30rem;
 }
-
-.test-2 {
-  /* position: absolute;
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 40px; */
-  border: 1px solid;
-  overflow: auto;
-  border-radius: 4px;
-  outline: none;
-  padding: 20px;
-  background-color: red;
-}
-/* .modal {
-  {{
-    overlay: {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      opacity: 1,
-    },
-
-    content: {
-      position: "absolute",
-      width: "500px",
-      height: "300px",
-      top: "200px",
-      left: "500px",
-      right: "500px",
-      bottom: "200px",
-      border: "1px solid #ccc",
-      background: "blue",
-      overflow: "auto",
-      WebkitOverflowScrolling: "touch",
-      borderRadius: "4px",
-      outline: "none",
-      padding: "20px",
-    },
-  }}
-} */

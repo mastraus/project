@@ -9,10 +9,10 @@ function EditToppingRow({
   return (
     <li
       key={topping.id}
-      class="list-group-item d-flex justify-content-between align-items-center p-2"
+      class="topping-list-group-item d-flex justify-content-between align-items-center p-2"
     >
       <input
-        class="edit-form d-flex align-items-center pl-4"
+        class="edit-topping-form d-flex align-items-center pl-4"
         type="text"
         required={true}
         placeholder={topping.topping_name}

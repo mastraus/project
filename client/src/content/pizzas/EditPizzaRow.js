@@ -10,11 +10,11 @@ function EditPizzaRow({
   return (
     <li
       key={pizza.id}
-      class="list-group-item d-flex justify-content-between align-items-center p-2"
+      class="pizza-list-group-item d-flex justify-content-between align-items-center p-2"
     >
       <div class="column edit-pizza-toppings">
         <input
-          class="edit-form d-flex align-items-center pl-4"
+          class="edit-pizza-form d-flex align-items-center pl-4 pb-2"
           type="text"
           placeholder={pizza.pizza_name}
           name="pizza_name"
@@ -24,6 +24,7 @@ function EditPizzaRow({
         {allToppings.map(({ id, topping_name }) => (
           <Fragment class="row">
             <input
+              className="ml-2"
               type="checkbox"
               name="toppings"
               id={id}
@@ -31,7 +32,9 @@ function EditPizzaRow({
               onChange={handleEditFormChange}
               defaultChecked={pizza.topping_ids.includes(id)}
             />
-            <label for={id}>{topping_name}</label>
+            <label className="ml-1" for={id}>
+              {topping_name}
+            </label>
           </Fragment>
         ))}
       </div>
