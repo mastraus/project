@@ -1,3 +1,7 @@
+span {
+  white-space: pre;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -82,9 +86,82 @@ body {
   font-size: 16px;
 }
 
-.list-group-item {
+.topping-list-group-item {
   border: 1px solid rgb(155, 167, 145);
   border-radius: 10px;
+  font-size: 18px;
+  font-family: Poppins, "sans-serif";
+}
+
+.pizza-list-group-item {
+  border: 1px solid rgb(155, 167, 145);
+  border-radius: 10px;
+}
+
+.topping-subtitle {
+  color: rgb(126, 125, 125);
+}
+
+.pizza-name {
+  font-family: Poppins, "sans-serif";
+}
+
+.pizza-btn {
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  width: 20rem;
+  background-color: rgb(42, 127, 42);
   font-weight: bolder;
   font-size: 18px;
 }
+
+.test-1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.test-2 {
+  /* position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px; */
+  border: 1px solid;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  background-color: red;
+}
+/* .modal {
+  {{
+    overlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      opacity: 1,
+    },
+
+    content: {
+      position: "absolute",
+      width: "500px",
+      height: "300px",
+      top: "200px",
+      left: "500px",
+      right: "500px",
+      bottom: "200px",
+      border: "1px solid #ccc",
+      background: "blue",
+      overflow: "auto",
+      WebkitOverflowScrolling: "touch",
+      borderRadius: "4px",
+      outline: "none",
+      padding: "20px",
+    },
+  }}
+} */

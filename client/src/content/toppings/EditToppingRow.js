@@ -17,7 +17,7 @@ function EditToppingRow({
         required={true}
         placeholder={topping.topping_name}
         name="topping_name"
-        value={editToppingName.topping_name}
+        value={editToppingName}
         onChange={handleEditChange}
       ></input>
       <div className="pr-3">

@@ -29,10 +29,16 @@ async function createPizza(req, res) {
 }
 
 async function updatePizza(req, res) {
-  const pizzaId = req.params.id;
+  const pizzaId = parseInt(req.params.id, 10);
+  console.log("Parsed pizza ID:");
+  console.log(typeof pizzaId);
   const changes = req.body;
   const pizzaName = changes.pizza_name;
+  console.log(`controller update name: ${pizzaName}`);
+  console.log(typeof pizzaName);
   const toppingIds = changes.topping_ids;
+  console.log(`controller update pizzatoppings: ${toppingIds}`);
+  console.log(typeof toppingIds);
   const pizza = await service.updatePizza(pizzaId, pizzaName, toppingIds);
   res.json(pizza);
 }

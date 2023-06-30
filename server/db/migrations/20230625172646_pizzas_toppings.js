@@ -6,13 +6,15 @@ exports.up = function (knex) {
       .foreign("pizza_id")
       .references("id")
       .inTable("pizza_names")
-      .onDelete("SET NULL");
+      .onUpdate("CASCADE")
+      .onDelete("CASCADE");
     table.integer("topping_id").unsigned();
     table
       .foreign("topping_id")
       .references("id")
       .inTable("topping_names")
-      .onDelete("SET NULL");
+      .onUpdate("CASCADE")
+      .onDelete("CASCADE");
   });
 };
 

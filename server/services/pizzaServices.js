@@ -111,6 +111,10 @@ function postNewPizza(pizzaName, toppingIds) {
     });
 }
 
+function handleEmptyPromises() {
+  return Promise.resolve([]);
+}
+
 function updatePizza(pizzaId, pizzaName, toppingIds) {
   return knex
     .transaction((trx) => {
@@ -132,8 +136,12 @@ function updatePizza(pizzaId, pizzaName, toppingIds) {
                 } else {
                   return knex("pizza_names")
                     .transacting(trx)
-                    .where("id", pizzaId)
-                    .update({ pizza_name: pizzaName });
+                    .select("*")
+                    .where({ id: pizzaId })
+                    .update({ pizza_name: pizzaName })
+                    .then(() => {
+                      console.log("Name block successful");
+                    });
                 }
               });
           }
@@ -141,30 +149,35 @@ function updatePizza(pizzaId, pizzaName, toppingIds) {
         .then(() => {
           return knex("pizzas_and_toppings")
             .transacting(trx)
-            .where("pizza_id", pizzaId)
+            .where({ pizza_id: pizzaId })
             .pluck("topping_id")
             .then((existingToppings) => {
               const toppingsToRemove = existingToppings.filter(
                 (toppingId) => !toppingIds.includes(toppingId)
               );
+
               const toppingsToAdd = toppingIds.filter(
                 (toppingId) => !existingToppings.includes(toppingId)
               );
 
-              const deletionPromise = knex("pizzas_and_toppings")
-                .transacting(trx)
-                .where("pizza_id", pizzaId)
-                .whereIn("topping_id", toppingsToRemove)
-                .del();
+              const deletionPromise = toppingsToRemove.length
+                ? knex("pizzas_and_toppings")
+                    .transacting(trx)
+                    .where({ pizza_id: pizzaId })
+                    .whereIn("topping_id", toppingsToRemove)
+                    .del()
+                : handleEmptyPromises();
 
-              const insertionPromise = knex("pizzas_and_toppings")
-                .transacting(trx)
-                .insert(
-                  toppingsToAdd.map((toppingId) => ({
-                    pizza_id: pizzaId,
-                    topping_id: toppingId,
-                  }))
-                );
+              const insertionPromise = toppingsToAdd.length
+                ? knex("pizzas_and_toppings")
+                    .transacting(trx)
+                    .insert(
+                      toppingsToAdd.map((toppingId) => ({
+                        pizza_id: pizzaId,
+                        topping_id: toppingId,
+                      }))
+                    )
+                : handleEmptyPromises();
 
               return Promise.all([deletionPromise, insertionPromise]);
             });

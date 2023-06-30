@@ -4,7 +4,7 @@ function ToppingsListItem({ topping, handleEditClick, handleDeleteClick }) {
   return (
     <li
       key={topping.id}
-      class="list-group-item d-flex justify-content-between align-items-center p-2"
+      class="topping-list-group-item d-flex justify-content-between align-items-center p-2"
     >
       <div class="d-flex align-items-center pl-4">{topping.topping_name}</div>
       <div class="pr-3">

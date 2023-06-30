@@ -3,8 +3,6 @@ import PizzaListItem from "./PizzaListItem";
 import AddPizzaModal from "./AddPizzaModal";
 import EditPizzaRow from "./EditPizzaRow";
 import Modal from "react-modal";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function PizzaList() {
   const [allPizzas, setAllPizzas] = useState([]);
@@ -38,17 +36,28 @@ function PizzaList() {
   }
 
   function extractPizzaAndToppingNames(allPizzas) {
-    return Object.values(allPizzas).map((item) => {
+    return Object.entries(allPizzas).map(([key, item]) => {
       const { pizza_name, toppings } = item;
       const toppingNames = toppings.map((topping) => topping.topping_name);
       const toppingIds = toppings.map((topping) => topping.topping_id);
 
       return {
+        id: key,
         pizza_name: pizza_name,
         topping_names: toppingNames,
         topping_ids: toppingIds,
       };
     });
+  }
+
+  function extractToppingsById(pizzaId, allPizzas) {
+    const pizza = allPizzas[pizzaId];
+
+    if (pizza) {
+      return pizza.toppings.map(({ topping_id }) => topping_id);
+    }
+
+    return [];
   }
 
   async function savePizza() {
@@ -67,6 +76,10 @@ function PizzaList() {
   }
 
   async function updatePizza() {
+    console.log(`front updatePizza func ${editFormData.pizza_name}`);
+    console.log(typeof editFormData.pizza_name);
+    console.log(`front updatePizza func ${editFormData.toppings}`);
+    console.log(typeof editFormData.toppings);
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -77,15 +90,19 @@ function PizzaList() {
         topping_ids: editFormData.toppings,
       }),
     };
-    //might need to model how it was done with POST
-    const response = await fetch(`/pizzas/${editId}`, requestOptions);
-    const data = await response.json();
-    const newPizzas = [...allPizzas];
-    const index = allPizzas.findIndex((pizza) => pizza.id === editId);
-    newPizzas[index] = data;
-    setAllPizzas(newPizzas);
-    setEditId(null);
-    fetchToppings();
+    await fetch(`/pizzas/${editId}`, requestOptions);
+    fetchPizzas();
+  }
+
+  async function deletePizza(pizzaId) {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    await fetch(`/pizzas/${pizzaId}`, requestOptions);
+    fetchPizzas();
   }
 
   const handleAddFormChange = (event) => {
@@ -109,22 +126,33 @@ function PizzaList() {
     event.preventDefault();
 
     const fieldName = event.target.getAttribute("name");
+    console.log(`fieldName: ${fieldName}`);
     const fieldValue = event.target.value;
+    console.log(`fieldValue: ${fieldValue}`);
+    const isChecked = event.target.checked;
 
-    const newFormData = { ...editFormData };
+    setEditFormData((prevFormData) => {
+      if (fieldName === "toppings") {
+        let updatedToppings;
 
-    if (fieldName === "toppings") {
-      newFormData[fieldName] = [...newFormData[fieldName], fieldValue];
-    } else {
-      newFormData[fieldName] = fieldValue;
-    }
+        if (isChecked) {
+          updatedToppings = [...prevFormData[fieldName], Number(fieldValue)];
+        } else {
+          updatedToppings = prevFormData[fieldName].filter(
+            (topping) => topping !== Number(fieldValue)
+          );
+        }
 
-    setEditFormData(newFormData);
-  };
-
-  const confirmAddedPizza = () => {
-    toast.success("Pizza added successfully!", {
-      position: toast.POSITION.TOP_RIGHT,
+        return {
+          ...prevFormData,
+          [fieldName]: updatedToppings,
+        };
+      } else {
+        return {
+          ...prevFormData,
+          [fieldName]: fieldValue,
+        };
+      }
     });
   };
 
@@ -132,24 +160,29 @@ function PizzaList() {
     event.preventDefault();
     savePizza();
     setModalOpen(false);
-    confirmAddedPizza();
   };
 
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
+    console.log(`handleEditSubmit edit form: ${editFormData.pizza_name}`);
+    console.log(`handleEditSubmit edit form: ${editFormData.toppings}`);
     updatePizza();
+    setEditId(null);
   };
 
   const handleEditClick = (event, pizza) => {
     event.preventDefault();
-    setEditId(pizza.id);
+    const pizzaId = pizza.id;
+    setEditId(pizzaId);
 
-    const formValues = {
+    const toppings = extractToppingsById(pizzaId, allPizzas);
+
+    const newFormData = {
       pizza_name: pizza.pizza_name,
-      toppings: pizza.toppings,
+      toppings,
     };
 
-    setEditFormData(formValues);
+    setEditFormData(newFormData);
   };
 
   const handleCancelClick = () => {
@@ -168,18 +201,28 @@ function PizzaList() {
     <main className="container">
       <h2>Specialty Pizzas</h2>
       <hr />
-      <button onClick={openModal}>Add New Pizza!</button>
-      <Modal
-        isOpen={modalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add Pizza"
-      >
-        <AddPizzaModal
-          allToppings={allToppings}
-          handleAddFormChange={handleAddFormChange}
-          handleAddFormSubmit={handleAddFormSubmit}
-        />
-      </Modal>
+      <div className="d-flex justify-content-center">
+        <button className="pizza-btn p-4" onClick={openModal}>
+          Add New Pizza!
+        </button>
+      </div>
+
+      {/* <div classname="modal-dialog modal-dialog-centered"> */}
+
+        <Modal
+          isOpen={modalOpen}
+          onRequestClose={closeModal}
+          ariaHideApp={false}
+          portalClassName="test1"
+        >
+          <AddPizzaModal
+            allToppings={allToppings}
+            handleAddFormChange={handleAddFormChange}
+            handleAddFormSubmit={handleAddFormSubmit}
+          />
+        </Modal>
+     
+      <br />
 
       <div>
         <ul class="mr-5">
@@ -191,6 +234,7 @@ function PizzaList() {
                     <br />
                     <EditPizzaRow
                       pizza={pizza}
+                      allToppings={allToppings}
                       editFormData={editFormData}
                       handleEditFormChange={handleEditFormChange}
                       handleCancelClick={handleCancelClick}
@@ -203,6 +247,7 @@ function PizzaList() {
                     <PizzaListItem
                       pizza={pizza}
                       handleEditClick={handleEditClick}
+                      handleDeleteClick={deletePizza}
                     />
                     <br />
                   </>
@@ -212,7 +257,6 @@ function PizzaList() {
           </form>
         </ul>
       </div>
-      <ToastContainer />
     </main>
   );
 }
