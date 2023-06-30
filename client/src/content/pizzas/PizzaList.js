@@ -52,11 +52,9 @@ function PizzaList() {
 
   function extractToppingsById(pizzaId, allPizzas) {
     const pizza = allPizzas[pizzaId];
-
     if (pizza) {
       return pizza.toppings.map(({ topping_id }) => topping_id);
     }
-
     return [];
   }
 
@@ -76,10 +74,6 @@ function PizzaList() {
   }
 
   async function updatePizza() {
-    console.log(`front updatePizza func ${editFormData.pizza_name}`);
-    console.log(typeof editFormData.pizza_name);
-    console.log(`front updatePizza func ${editFormData.toppings}`);
-    console.log(typeof editFormData.toppings);
     const requestOptions = {
       method: "PUT",
       headers: {
@@ -126,9 +120,7 @@ function PizzaList() {
     event.preventDefault();
 
     const fieldName = event.target.getAttribute("name");
-    console.log(`fieldName: ${fieldName}`);
     const fieldValue = event.target.value;
-    console.log(`fieldValue: ${fieldValue}`);
     const isChecked = event.target.checked;
 
     setEditFormData((prevFormData) => {
@@ -164,8 +156,6 @@ function PizzaList() {
 
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
-    console.log(`handleEditSubmit edit form: ${editFormData.pizza_name}`);
-    console.log(`handleEditSubmit edit form: ${editFormData.toppings}`);
     updatePizza();
     setEditId(null);
   };
@@ -207,21 +197,19 @@ function PizzaList() {
         </button>
       </div>
 
-
-        <Modal
-          isOpen={modalOpen}
-          onRequestClose={closeModal}
-          ariaHideApp={false}
-          centered
-          className="ReactModal__Content--after-open"
-        >
-          <AddPizzaModal
-            allToppings={allToppings}
-            handleAddFormChange={handleAddFormChange}
-            handleAddFormSubmit={handleAddFormSubmit}
-          />
-        </Modal>
-
+      <Modal
+        isOpen={modalOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+        centered
+        className="ReactModal__Content--after-open"
+      >
+        <AddPizzaModal
+          allToppings={allToppings}
+          handleAddFormChange={handleAddFormChange}
+          handleAddFormSubmit={handleAddFormSubmit}
+        />
+      </Modal>
 
       <br />
 

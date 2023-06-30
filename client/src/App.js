@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import PizzaList from "./content/pizzas/PizzaList";
 import ToppingsList from "./content/toppings/ToppingsList";
+import HomePage from "./shared/HomePage";
 import React from "react";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
@@ -33,6 +34,7 @@ function App() {
             <Col sm={9}>
               <Tab.Content>
                 <Routes>
+                  <Route path={`/`} element={<HomePage />} />
                   <Route path={`/pizzas`} element={<PizzaList />} />
                   <Route path={`/toppings`} element={<ToppingsList />} />
                 </Routes>

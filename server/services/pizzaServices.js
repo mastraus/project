@@ -138,10 +138,7 @@ function updatePizza(pizzaId, pizzaName, toppingIds) {
                     .transacting(trx)
                     .select("*")
                     .where({ id: pizzaId })
-                    .update({ pizza_name: pizzaName })
-                    .then(() => {
-                      console.log("Name block successful");
-                    });
+                    .update({ pizza_name: pizzaName });
                 }
               });
           }

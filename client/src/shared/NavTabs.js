@@ -1,11 +1,7 @@
 import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
-// import PizzaGrid from "./PizzaGrid";
-// import PizzaList from "./content/pizzas/PizzaList";
 
 function NavTabs() {
   return (
