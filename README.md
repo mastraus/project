@@ -2,7 +2,7 @@
 
 Use this dashboard to manage the specialty pizzas and available toppings at Mindful Pizza Co.! This project serves as my technical assessment for potential employment at StrongMind.
 
-The live version of the app can be found (https://strongmind-prod-369cd0f00759.herokuapp.com/)[here]!
+The live version of the app can be found [here](https://strongmind-prod-369cd0f00759.herokuapp.com/)!
 
 ## Local Install
 
