@@ -1,11 +1,11 @@
 {
-  "name": "project",
+  "name": "strongmind-pizza",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "start:dev": "nodemon server.js",
+    "start": "node server.js --ignore client",
+    "start:dev": "nodemon server.js --ignore client",
     "test": "jest",
     "seed": "knex seed:run",
     "knex": "knex",
