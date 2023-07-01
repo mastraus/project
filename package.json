@@ -2,11 +2,12 @@
   "name": "strongmind-pizza",
   "version": "1.0.0",
   "description": "Use this dashboard to manage the specialty pizzas and available toppings at Mindful Pizza Co.! This project serves as my technical assessment for potential employment at StrongMind.",
-  "main": "index.js",
+  "main": "",
   "scripts": {
-    "server": "node server/server",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "npm start --prefix server",
+    "install-client": "cd client && npm install && npm run build && cd ..",
+    "install-server": "cd server && npm install & cd ..",
+    "heroku-postbuild": "npm run install-client && npm run install-server"
   },
   "repository": {
     "type": "git",
