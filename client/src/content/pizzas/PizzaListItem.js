@@ -11,12 +11,16 @@ function PizzaListItem({ pizza, handleEditClick, handleDeleteClick }) {
           <h5>{pizza.pizza_name}</h5>
         </div>
         <div className="topping-subtitle row d-flex pizza-toppings pl-4">
-          {pizza.topping_names.map((topping, index) => (
-            <span key={topping}>
-              {topping}
-              {index !== pizza.topping_names.length - 1 && ", "}
-            </span>
-          ))}
+          {pizza.topping_names.length === 0 ? (
+            <span>None</span>
+          ) : (
+            pizza.topping_names.map((topping, index) => (
+              <span key={topping}>
+                {topping}
+                {index !== pizza.topping_names.length - 1 && ", "}
+              </span>
+            ))
+          )}
         </div>
       </div>
 

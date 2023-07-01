@@ -88,16 +88,22 @@ function postNewPizza(pizzaName, toppingIds) {
         .then((response) => {
           pizzaId = response[0];
 
-          const toppingInserts = toppingIds.map((toppingId) => {
-            return {
-              pizza_id: pizzaId.id,
-              topping_id: toppingId,
-            };
-          });
+          if (toppingIds.length === 0) {
+            return knex("pizzas_and_toppings")
+              .transacting(trx)
+              .insert({ pizza_id: pizzaId.id, topping_id: null });
+          } else {
+            const toppingInserts = toppingIds.map((toppingId) => {
+              return {
+                pizza_id: pizzaId.id,
+                topping_id: toppingId,
+              };
+            });
 
-          return knex("pizzas_and_toppings")
-            .transacting(trx)
-            .insert(toppingInserts);
+            return knex("pizzas_and_toppings")
+              .transacting(trx)
+              .insert(toppingInserts);
+          }
         })
         .then(() => {
           return pizzaId;
